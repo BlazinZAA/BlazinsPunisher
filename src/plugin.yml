@@ -1,0 +1,7 @@
+main: net.viedantmc.Punishments.Main
+name: BlazinsPunishments
+version: 0.1
+author: Blazin_
+
+commands:
+  warn:
