@@ -29,11 +29,13 @@ public class Main extends JavaPlugin {
             List<String> Reasons = getConfig().getStringList(PlayerUUID + ".Reasons");
             Reasons.add(args[1]);
             this.getConfig().createSection(PlayerUUID + ".Reasons");
+            String PlayerName = Bukkit.getPlayer(PlayerUUID).getName();
             if (this.getConfig().contains("Warnings")) {
                 this.getConfig().getConfigurationSection(String.valueOf(PlayerUUID)).getKeys(false).forEach(key ->
                         warnings.put(UUID.fromString(key), this.getConfig().getInt(PlayerUUID + ".Warnings" + key))
                 );
             }
+            //
             if (warnings.containsKey(PlayerUUID)) {
                 this.getConfig().set(PlayerUUID + ".Reasons", Reasons);
                 warnings.put(PlayerUUID, warnings.get(PlayerUUID) + 1);
@@ -41,6 +43,10 @@ public class Main extends JavaPlugin {
             } else {
                 this.getConfig().set(PlayerUUID + ".Reasons", Reasons);
                 warnings.put(PlayerUUID, 1);
+            }
+            if (!this.getConfig().contains(PlayerUUID + ".PlayerName")) {
+                this.getConfig().createSection(PlayerUUID + ".PlayerName");
+                this.getConfig().set(PlayerUUID+ ".PlayerName", PlayerName);
             }
             if (!warnings.isEmpty()) {
                 for (Map.Entry<UUID, Integer> entry : warnings.entrySet()) {
