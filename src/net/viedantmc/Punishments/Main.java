@@ -1,17 +1,22 @@
 package net.viedantmc.Punishments;
 import net.viedantmc.Punishments.Files.DataManager;
+import net.viedantmc.Punishments.Files.PunishmentsManager;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import java.util.*;
 
 public class Main extends JavaPlugin {
     public DataManager data;
-    public static Map<UUID , Integer> warnings = new HashMap<>();
+    public PunishmentsManager Punish;
+    public static Map<UUID , Integer> warnings = new HashMap<>(); //maps the PLayerUUID -> Integer , and the integer would be the amount of warnings
 
     @Override
     public void onEnable() {
+        this.Punish = new PunishmentsManager(this);
         this.data = new DataManager(this);
         this.saveDefaultConfig();
     }
@@ -19,13 +24,10 @@ public class Main extends JavaPlugin {
     @Override
     public void onDisable() {
     }
-
-    public static void StringBuilder() {
-    }
-
+    
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if (label.equalsIgnoreCase("warn")) {
-            UUID PlayerUUID = Bukkit.getPlayer(args[0]).getUniqueId();
+            UUID PlayerUUID = Bukkit.getPlayer(args[0]).getUniqueId();//warn args0 args1
             List<String> Reasons = getConfig().getStringList(PlayerUUID + ".Reasons");
             Reasons.add(args[1]);
             this.getConfig().createSection(PlayerUUID + ".Reasons");
@@ -35,7 +37,7 @@ public class Main extends JavaPlugin {
                         warnings.put(UUID.fromString(key), this.getConfig().getInt(PlayerUUID + ".Warnings" + key))
                 );
             }
-            //
+            // When we map a UUID to an integer , the integer is the "key" , like a child of the UUID
             if (warnings.containsKey(PlayerUUID)) {
                 this.getConfig().set(PlayerUUID + ".Reasons", Reasons);
                 warnings.put(PlayerUUID, warnings.get(PlayerUUID) + 1);
@@ -54,10 +56,18 @@ public class Main extends JavaPlugin {
                 }
                 this.saveConfig();
             }
+
+            int warningsamount = warnings.get(PlayerUUID);
+            int threshold =  this.Punish.getConfig().getInt("Punishments.Warnings");
+            if(warningsamount == threshold) {
+
+            }
             return true;
         }
         return false;
     }
+
+
 }
 
 
