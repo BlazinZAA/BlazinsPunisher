@@ -7,6 +7,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import javax.print.DocFlavor;
 import java.util.*;
 
 public class Main extends JavaPlugin {
@@ -30,6 +32,9 @@ public class Main extends JavaPlugin {
             UUID PlayerUUID = Bukkit.getPlayer(args[0]).getUniqueId();//warn args0 args1
             List<String> Reasons = getConfig().getStringList(PlayerUUID + ".Reasons");
             Reasons.add(args[1]);
+            Reasons.add(PlayerUUID);
+            String StringUUID = PlayerUUID.toString(); // I'm not going to use this yet but this turns the PlayerUUID to a string
+                                                       // for storing it in lists later on possibly
             this.getConfig().createSection(PlayerUUID + ".Reasons");
             String PlayerName = Bukkit.getPlayer(PlayerUUID).getName();
             if (this.getConfig().contains("Warnings")) {
