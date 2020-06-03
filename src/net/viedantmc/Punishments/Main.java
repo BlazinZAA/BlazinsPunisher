@@ -56,11 +56,13 @@ public class Main extends JavaPlugin {
                 }
                 this.saveConfig();
             }
-
+            // Threshold is the amount of warnings required before executing the command
             int warningsamount = warnings.get(PlayerUUID);
             int threshold =  this.Punish.getConfig().getInt("Punishments.Warnings");
             if(warningsamount == threshold) {
-
+                String command = this.Punish.getConfig().getString("Command");
+                command.replace("$Player", PlayerUUID.toString());
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
             }
             return true;
         }
