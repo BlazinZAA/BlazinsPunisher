@@ -59,12 +59,12 @@ public class Main extends JavaPlugin {
                 }
                 this.saveConfig();
             }
-            String ConfigTest = this.Punish.getConfig().get("Punishments.Warnings.Command").toString();
+            String ConfigTest = this.Punish.getConfig().getString("Punishments.Warnings.Command");
             sender.sendMessage(ConfigTest);
              //Threshold is the amount of warnings required before executing the command
-            int warningsamount = warnings.get(PlayerUUID).intValue();
+            int WarningsAmount = warnings.get(PlayerUUID);
             int threshold =  this.Punish.getConfig().getInt("Punishments.Warnings");
-            if(warningsamount == threshold) {
+            if(WarningsAmount == threshold) {
                 String command = this.Punish.getConfig().getString("Punishments.Warnings.Command");
                 command.replace("$Player", PlayerUUID.toString());
                 Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
