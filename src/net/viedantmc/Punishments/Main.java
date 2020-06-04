@@ -32,9 +32,7 @@ public class Main extends JavaPlugin {
             UUID PlayerUUID = Bukkit.getPlayer(args[0]).getUniqueId();//warn args0 args1
             List<String> Reasons = getConfig().getStringList(PlayerUUID + ".Reasons");
             Reasons.add(args[1]);
-            Reasons.add(PlayerUUID);
-            String StringUUID = PlayerUUID.toString(); // I'm not going to use this yet but this turns the PlayerUUID to a string
-                                                       // for storing it in lists later on possibly
+            String StringUUID = PlayerUUID.toString(); // I'm not going to use this yet but this turns the PlayerUUID to a string // for storing it in lists later on possibly
             this.getConfig().createSection(PlayerUUID + ".Reasons");
             String PlayerName = Bukkit.getPlayer(PlayerUUID).getName();
             if (this.getConfig().contains("Warnings")) {
@@ -46,11 +44,11 @@ public class Main extends JavaPlugin {
             if (warnings.containsKey(PlayerUUID)) {
                 this.getConfig().set(PlayerUUID + ".Reasons", Reasons);
                 warnings.put(PlayerUUID, warnings.get(PlayerUUID) + 1);
-
             } else {
                 this.getConfig().set(PlayerUUID + ".Reasons", Reasons);
                 warnings.put(PlayerUUID, 1);
             }
+
             if (!this.getConfig().contains(PlayerUUID + ".PlayerName")) {
                 this.getConfig().createSection(PlayerUUID + ".PlayerName");
                 this.getConfig().set(PlayerUUID+ ".PlayerName", PlayerName);
@@ -61,11 +59,13 @@ public class Main extends JavaPlugin {
                 }
                 this.saveConfig();
             }
-            // Threshold is the amount of warnings required before executing the command
-            int warningsamount = warnings.get(PlayerUUID);
+            String ConfigTest = this.Punish.getConfig().get("Punishments.Warnings.Command").toString();
+            sender.sendMessage(ConfigTest);
+             //Threshold is the amount of warnings required before executing the command
+            int warningsamount = warnings.get(PlayerUUID).intValue();
             int threshold =  this.Punish.getConfig().getInt("Punishments.Warnings");
             if(warningsamount == threshold) {
-                String command = this.Punish.getConfig().getString("Command");
+                String command = this.Punish.getConfig().getString("Punishments.Warnings.Command");
                 command.replace("$Player", PlayerUUID.toString());
                 Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
             }
